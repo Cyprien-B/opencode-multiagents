@@ -99,6 +99,7 @@
         "webfetch": "deny"
       }
     },
+
     "writerDoc": {
       "mode": "subagent",
       "model": "opencode-go/deepseek-v4-flash",
