@@ -89,7 +89,7 @@
     },
     "reviewer": {
       "mode": "subagent",
-      "model": "opencode-go/qwen3.6-plus",
+      "model": "opencode-go/qwen3.7-plus",
       "description": "QA Specialist (Qwen) — audits diffs for bugs/regressions/security. Used solo for flash-tier narrow tasks, OR paired with `reviewerminimax` in parallel for dual reviews.",
       "temperature": 0.1,
       "steps": 10,
@@ -102,7 +102,7 @@
     },
     "reviewerminimax": {
       "mode": "subagent",
-      "model": "opencode-go/minimax-m2.7",
+      "model": "opencode-go/minimax-m3",
       "description": "QA Specialist (Deepseek) — audits diffs for bugs/regressions/security. Used solo for flash-tier narrow tasks, OR paired with `reviewer` in parallel for dual reviews.",
       "temperature": 0.1,
       "steps": 10,
