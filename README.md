@@ -50,6 +50,12 @@ dans la table des modèles, il applique automatiquement ce workflow:
 | Le push GitHub échoue                    | Patch local conservé + alerte Telegram, retry au prochain cron (pas de rollback)                  |
 | Modif cosmétique (juste URLs/endpoints)  | Notification neutre, pas d'action sur la config                                                  |
 
+**Sync bidirectionnel:** au début de chaque run, le cron fait un
+`git pull --ff-only` depuis `origin/main` (stash + pop automatique) pour
+récupérer les éventuelles modifs push depuis une autre machine. Si le
+pull échoue (conflit, divergence), le cron avorte avec alerte et ne fait
+rien d'autre — pas de patch sur état stale.
+
 Détails, conventions, et module structure:
 [`~/.hermes/skills/devops/provider-model-availability-monitor/SKILL.md`](https://github.com/Cyprien-B/opencode-multiagents)
 (skill `provider-model-availability-monitor`, section "Reference
