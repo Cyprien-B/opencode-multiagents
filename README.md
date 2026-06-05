@@ -32,8 +32,8 @@ Architecture multi-agents pour opencode, orchestrée par un agent
 | **artisan-lite**    | `deepseek-v4-flash` | Implémenteur Flash — tâches étroites ou de complexité moyenne, moins coûteux que `artisan`.              |
 | **explorer**        | `deepseek-v4-flash` | Navigateur lecture-seule — explore le codebase, trouve symboles et flux de données.                      |
 | **readerDoc**       | `deepseek-v4-flash` | Analyste de documentation — extrait les exigences et conventions des fichiers de doc.                    |
-| **reviewer**        | `qwen3.6-plus`      | Spécialiste QA (Qwen) — audite les diffs pour bugs, régressions et failles de sécurité.                  |
-| **reviewerminimax** | `minimax-m2.7`      | Spécialiste QA (MiniMax) — seconde relecture en parallèle pour détecter ce qu'un seul reviewer raterait. |
+| **reviewer**        | `qwen3.7-plus`      | Spécialiste QA (Qwen) — audite les diffs pour bugs, régressions et failles de sécurité.                  |
+| **reviewerminimax** | `minimax-m3`        | Spécialiste QA (MiniMax) — seconde relecture en parallèle pour détecter ce qu'un seul reviewer raterait. |
 | **reviewerArbiter** | `MiMo-V2.5-Pro`     | Arbitre de revue — départage les désaccords substantiels entre les deux reviewers.                       |
 | **writerDoc**       | `deepseek-v4-flash` | Rédacteur technique — met à jour la documentation, le changelog et les docstrings après validation.      |
 
