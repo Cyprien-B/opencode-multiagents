@@ -36,3 +36,21 @@ Architecture multi-agents pour opencode, orchestrée par un agent
 | **reviewerminimax** | `minimax-m2.7`      | Spécialiste QA (MiniMax) — seconde relecture en parallèle pour détecter ce qu'un seul reviewer raterait. |
 | **reviewerArbiter** | `MiMo-V2.5-Pro`     | Arbitre de revue — départage les désaccords substantiels entre les deux reviewers.                       |
 | **writerDoc**       | `deepseek-v4-flash` | Rédacteur technique — met à jour la documentation, le changelog et les docstrings après validation.      |
+
+## Workflow auto de maintenance (cron quotidien)
+
+Un cron `no_agent` tourne chaque jour à 12:00 et vérifie les limites
+OpenCode Go sur `https://opencode.ai/docs/go/`. Si quelque chose change
+dans la table des modèles, il applique automatiquement ce workflow:
+
+| Cas détecté                              | Action auto                                                                                       |
+| ---------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| Un modèle utilisé ici **disparaît**      | Remplacement par le modèle de même famille le plus récent encore listé dans l'abo OpenCode Go, puis commit + push sur `main` |
+| Un nouveau modèle apparaît dans l'abo    | Recherche web exhaustive (4-6 sources) + rapport Telegram avec proposition d'intégration, **aucune modif de la config** tant que tu n'as pas validé |
+| Le push GitHub échoue                    | Patch local conservé + alerte Telegram, retry au prochain cron (pas de rollback)                  |
+| Modif cosmétique (juste URLs/endpoints)  | Notification neutre, pas d'action sur la config                                                  |
+
+Détails, conventions, et module structure:
+[`~/.hermes/skills/devops/provider-model-availability-monitor/SKILL.md`](https://github.com/Cyprien-B/opencode-multiagents)
+(skill `provider-model-availability-monitor`, section "Reference
+watchdog: opencode_go_check.py").
