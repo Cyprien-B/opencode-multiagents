@@ -115,7 +115,7 @@
     },
     "reviewerArbiter": {
       "mode": "subagent",
-      "model": "opencode-go/MiMo-V2.5-Pro",
+      "model": "opencode-go/qwen3.7-max",
       "description": "Review Arbiter — resolves substantive disagreements between `reviewer` and `reviewerminimax`. Invoked only by Orchestrator when reviewers disagree on a blocker.",
       "temperature": 0.1,
       "steps": 5,
