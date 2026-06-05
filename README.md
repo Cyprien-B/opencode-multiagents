@@ -56,6 +56,13 @@ récupérer les éventuelles modifs push depuis une autre machine. Si le
 pull échoue (conflit, divergence), le cron avorte avec alerte et ne fait
 rien d'autre — pas de patch sur état stale.
 
+**Doc auto-sync:** à chaque patch `opencode.json` (auto-fix), le cron
+met aussi à jour la colonne `Modèle` du tableau dans `README.md`.
+Seule la colonne modèle est touchée — les descriptions FR custom
+que tu as écrites à la main sont préservées. Le commit est groupé
+(`opencode.json` + `README.md` dans le même commit, message
+`auto: replace <old> by <new> (N agents) + README sync`).
+
 Détails, conventions, et module structure:
 [`~/.hermes/skills/devops/provider-model-availability-monitor/SKILL.md`](https://github.com/Cyprien-B/opencode-multiagents)
 (skill `provider-model-availability-monitor`, section "Reference
