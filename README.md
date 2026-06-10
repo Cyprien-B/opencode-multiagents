@@ -8,13 +8,20 @@ Architecture multi-agents pour opencode, orchestrée par un agent
 > 📊
 > [Voir le diagramme d'architecture](https://excalidraw.com/#json=fdpqOixa3J94liPN3j06d,XW-DtYDLACyoyRGYHlSLQg)
 
-1. **Orchestrator** analyse la demande utilisateur et élabore un plan
-2. Il délègue l'implémentation à `artisan` (pro) ou `artisan-lite` (flash)
-3. Il peut lancer `explorer` pour cartographier le code ou `readerDoc` pour lire
-   la doc
-4. Après implémentation, `reviewer` et/ou `reviewerminimax` auditent le diff
-5. En cas de désaccord bloquant, `reviewerArbiter` tranche
-6. Une fois validé, `writerDoc` met à jour la documentation
+1. **Orchestrator** analyse la demande utilisateur ; dès qu'une ambiguïté
+   significative existe, il pose des questions de clarification **avant**
+   d'élaborer le plan (comportement par défaut)
+2. `readerDoc` (une fois par session) distille `AGENTS.md` + la doc projet
+   dans `.opencode/session-context.md`, réutilisé par tous les agents ;
+   `explorer` cartographie le code de la tâche
+3. Il délègue l'implémentation à `artisan` (pro) ou `artisan-lite` (flash)
+4. `verifier` rejoue indépendamment tests + linter (sortie brute,
+   verdict `VERIFY: GREEN/RED`) — pas de revue tant que ce n'est pas vert
+5. `reviewer` (axe sécurité) et/ou `reviewerminimax` (axe correction)
+   auditent le diff réel via git en lecture seule
+6. En cas de désaccord bloquant, `reviewerArbiter` tranche
+7. Une fois validé, `writerDoc` met à jour la documentation, le changelog
+   et `AGENTS.md`
 
 ## Agents principaux
 
@@ -31,10 +38,11 @@ Architecture multi-agents pour opencode, orchestrée par un agent
 | **artisan**         | `deepseek-v4-pro`   | Implémenteur Pro — tâches complexes, multi-fichiers, architecturales ou sensibles.                       |
 | **artisan-lite**    | `deepseek-v4-flash` | Implémenteur Flash — tâches étroites ou de complexité moyenne, moins coûteux que `artisan`.              |
 | **explorer**        | `deepseek-v4-flash` | Navigateur lecture-seule — explore le codebase, trouve symboles et flux de données.                      |
-| **readerDoc**       | `deepseek-v4-flash` | Analyste de documentation — extrait les exigences et conventions des fichiers de doc.                    |
-| **reviewer**        | `qwen3.7-plus`      | Spécialiste QA (Qwen) — audite les diffs pour bugs, régressions et failles de sécurité.                  |
-| **reviewerminimax** | `minimax-m3`        | Spécialiste QA (MiniMax) — seconde relecture en parallèle pour détecter ce qu'un seul reviewer raterait. |
-| **reviewerArbiter** | `MiMo-V2.5-Pro`     | Arbitre de revue — départage les désaccords substantiels entre les deux reviewers.                       |
+| **readerDoc**       | `deepseek-v4-flash` | Analyste de documentation — distille `AGENTS.md` + la doc projet dans `.opencode/session-context.md` (une fois par session). |
+| **verifier**        | `deepseek-v4-flash` | Vérificateur indépendant — rejoue tests et linter après implémentation, rapporte la sortie brute (`VERIFY: GREEN/RED`). |
+| **reviewer**        | `qwen3.7-plus`      | Reviewer Sécurité (Qwen) — audite les diffs avec la sécurité comme axe principal (injections, authz, secrets, crypto, supply chain), plus la correction. |
+| **reviewerminimax** | `minimax-m3`        | Spécialiste QA (MiniMax) — axe correction/régressions en revue duale ; seconde lignée de modèle pour détecter ce qu'un seul reviewer raterait. |
+| **reviewerArbiter** | `qwen3.7-max`       | Arbitre de revue — départage les désaccords substantiels entre les deux reviewers.                       |
 | **writerDoc**       | `deepseek-v4-flash` | Rédacteur technique — met à jour la documentation, le changelog et les docstrings après validation.      |
 
 ## Workflow auto de maintenance (cron quotidien)
