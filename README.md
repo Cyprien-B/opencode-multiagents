@@ -27,8 +27,8 @@ Architecture multi-agents pour opencode, orchestrée par un agent
 
 | Agent            | Modèle              | Description                                                                                        |
 | ---------------- | ------------------- | -------------------------------------------------------------------------------------------------- |
-| **general**      | `kimi-k2.6`         | Agent primaire par défaut, utilisé directement par l'utilisateur.                                  |
-| **Orchestrator** | `kimi-k2.6`         | Stratège pur — conçoit le plan, délègue toute exécution aux sous-agents, ne touche jamais au code. |
+| **general**      | `kimi-k2.7`         | Agent primaire par défaut, utilisé directement par l'utilisateur.                                  |
+| **Orchestrator** | `kimi-k2.7`         | Stratège pur — conçoit le plan, délègue toute exécution aux sous-agents, ne touche jamais au code. |
 | **Cheapbuild**   | `deepseek-v4-flash` | Senior Dev à usage direct pour des tâches rapides sans passer par l'orchestrateur.                 |
 
 ## Sous-agents de l'Orchestrator
